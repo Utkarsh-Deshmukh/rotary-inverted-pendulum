@@ -1,6 +1,10 @@
 import numpy as np
 import constants
 
+
+def wrap_angle(angle):
+    return (angle + np.pi) % (2 * np.pi) - np.pi
+
 class Pendulum:
     def __init__(self):
         self.length = constants.PENDULUM_LENGTH_METERS
@@ -30,7 +34,7 @@ class Controller:
         self.max_allowable_torque = constants.MAX_ALLOWABLE_TORQUE
 
     def compute_control(self, pendulum, desired_theta=0.0):
-        error = (desired_theta - pendulum.theta + np.pi) % (2*np.pi) - np.pi        # Computes the shortest angulur error. for example 540 degress == 180 degrees. this computation will ensure this.
+        error = wrap_angle(desired_theta - pendulum.theta)
 
         error_dot = -pendulum.omega
 
